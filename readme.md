@@ -10,7 +10,7 @@ LDAP Tool is a SpringBoot application that uses the unboundedid library for inte
 
 1. cd into the parent directory and run mvn clean package
 1. cd into the target directory and run:
-`java -jar `
+`java -jar ldap-tool-0.0.1-SNAPSHOT.jar`
 1. application will be available in your web browser at: localhost:8080/search
 
 ## Deploying
@@ -19,7 +19,6 @@ The .jar file generated in the above steps can be deployed to WebSphere Liberty 
 by following the steps for deploying a Spring Boot jar file.
 
 See this repo for steps to deploy to Open Liberty in a Docker container: [LDAP-Tool-OpenLiberty-Docker](https://github.com/pmcder/LDAP-Tool-OpenLiberty-Docker-Image)
-
 
 ## Using LDAP Tool
 
