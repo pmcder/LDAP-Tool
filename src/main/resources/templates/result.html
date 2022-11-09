@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head> 
+	    <title>search results</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	</head>
+	<body class="bg-light">
+		<div class="container bg-light">
+				<div th:fragment="results(result)">
+					<div class="col-sm-6" th:if="${result.searchString != NULL}">
+					    <div th:if="${result.entries}>0">
+					    	<strong>Entries:</strong>
+						    <div th:each="entry: ${result.entriesList}">
+						    	<p th:text="${entry.LDIFString}"/>
+						 	</div>
+				    	</div>
+				   </div>
+		    	</div>
+		    <a href="/search">New Search</a>
+		</div>
+	</body>
+</html>
