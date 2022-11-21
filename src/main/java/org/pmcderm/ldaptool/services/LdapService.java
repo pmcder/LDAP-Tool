@@ -1,5 +1,6 @@
 package org.pmcderm.ldaptool.services;
 
+import org.pmcderm.ldaptool.web.LDAPBindModel;
 import org.pmcderm.ldaptool.web.LDAPSearchModel;
 import org.pmcderm.ldaptool.web.LDAPSearchResultModel;
 import com.unboundid.ldap.sdk.Entry;
@@ -23,5 +24,7 @@ public interface LdapService {
    * deletes an entry 
    */
   public void delete();
+  
+  public LDAPBindModel bind(LDAPBindModel bindModel);
 
 }

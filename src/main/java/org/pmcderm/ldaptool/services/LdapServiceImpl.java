@@ -3,6 +3,7 @@ package org.pmcderm.ldaptool.services;
 import java.util.List;
 
 import org.pmcderm.ldaptool.utils.LDAPUtils;
+import org.pmcderm.ldaptool.web.LDAPBindModel;
 import org.pmcderm.ldaptool.web.LDAPEntryModel;
 import org.pmcderm.ldaptool.web.LDAPSearchModel;
 import org.pmcderm.ldaptool.web.LDAPSearchResultModel;
@@ -13,7 +14,10 @@ import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.SearchRequest;
 import com.unboundid.ldap.sdk.SearchResult;
 import com.unboundid.ldap.sdk.SearchScope;
+import com.unboundid.ldap.sdk.SimpleBindRequest;
+import com.unboundid.ldap.sdk.BindRequest;
 import com.unboundid.ldap.sdk.Entry;
+import com.unboundid.ldap.sdk.Filter;
 
 @Service
 public class LdapServiceImpl implements LdapService {
@@ -61,7 +65,9 @@ public class LdapServiceImpl implements LdapService {
    
       this.ldapConn.connect(this.host, this.port);
       
-      SearchRequest searchRequest = new SearchRequest(ls.getBaseDN(),SearchScope.SUB,ls.getFilter(),ls.getAttributes());
+      Filter filter = Filter.create(ls.getFilterString());
+      
+      SearchRequest searchRequest = new SearchRequest(ls.getBaseDN(),SearchScope.SUB,filter,ls.getAttributes());
       SearchResult searchResult = this.ldapConn.search(searchRequest);
       
       //TODO move into mapper
@@ -101,4 +107,34 @@ public class LdapServiceImpl implements LdapService {
     this.port = port;
   }
 
+  @Override
+  public LDAPBindModel bind(LDAPBindModel bindModel) {
+    
+    //error handling around these for null host and port - also needed in other methods in this class
+    this.host = bindModel.getHost();
+    this.port = bindModel.getPort();
+    
+    BindRequest bindRequest = new SimpleBindRequest(bindModel.getDNString(),bindModel.getPassword());
+    //TODO make the bind and get the result first
+    try {
+      
+      this.ldapConn.connect(this.host, this.port);
+      
+      System.out.println(this.ldapConn.bind(bindRequest).getResultCode());
+      
+      if (this.ldapConn.bind(bindRequest).getResultCode().intValue()==0) {
+        bindModel.setBindSuccessful(true);
+      }
+      else {
+        bindModel.setBindSuccessful(false);
+        bindModel.setResultCodeName(this.ldapConn.bind(bindRequest).getResultCode().getName());
+      }
+    } catch (LDAPException le) {
+        bindModel.setErrorMessage(le.getMessage());
+    }
+      catch (Exception e) {
+        bindModel.setErrorMessage(e.getMessage());
+      }
+    return bindModel;
+  }
 }

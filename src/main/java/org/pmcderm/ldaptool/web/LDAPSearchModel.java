@@ -10,7 +10,7 @@ public class LDAPSearchModel {
   
   private String scope;
   
-  private String filter;
+  private String filterString;
   
   private String attributes;
   
@@ -46,12 +46,12 @@ public class LDAPSearchModel {
     this.scope = scope;
   }
 
-  public String getFilter() {
-    return filter;
+  public String getFilterString() {
+    return filterString;
   }
 
-  public void setFilter(String filter) {
-    this.filter = filter;
+  public void setFilterString(String filterString) {
+    this.filterString = filterString;
   }
 
   public String getAttributes() {

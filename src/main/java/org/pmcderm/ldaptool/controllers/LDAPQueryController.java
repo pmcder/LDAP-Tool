@@ -1,6 +1,7 @@
 package org.pmcderm.ldaptool.controllers;
 
 import org.pmcderm.ldaptool.services.LdapServiceImpl;
+import org.pmcderm.ldaptool.web.LDAPBindModel;
 import org.pmcderm.ldaptool.web.LDAPSearchModel;
 import org.pmcderm.ldaptool.web.LDAPSearchResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,18 @@ public class LDAPQueryController {
     model.addAttribute("result", result);
     model.addAttribute("search", search);
     return "search";
+  }
+  
+  @GetMapping("/bind")
+  public String bindForm(Model model) {
+    model.addAttribute("bind",new LDAPBindModel());
+    return "bind";
+  }
+  
+  @PostMapping("/bind")
+  public String doBind(@ModelAttribute LDAPBindModel bindModel, Model model) {
+    LDAPBindModel bind = this.ldapService.bind(bindModel);
+    model.addAttribute("bind",bind);
+    return "bind";
   }
 }
